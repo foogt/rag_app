@@ -1,0 +1,6 @@
+Cargo.lock
+/target
+/.env
+server/_data_rocksdb
+server/_data_rocksdb_inventory
+web/dist
