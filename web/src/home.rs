@@ -355,7 +355,7 @@ pub fn home() -> Html {
         let form_materials = form_materials.clone();
         Callback::from(move |_| {
             let mut m = (*form_materials).clone();
-            m.insert("New Material".to_string(), "0".to_string());
+            m.insert("".to_string(), "0".to_string());
             form_materials.set(m);
         })
     };
@@ -627,6 +627,7 @@ pub fn home() -> Html {
                                     <td>
                                         <input class={classes!("form-control", if !is_valid { "is-invalid" } else { "" })} 
                                             list="inventory-list"
+                                            placeholder="Material Name"
                                             value={name.clone()} 
                                             onchange={Callback::from(move |e: Event| {
                                                 let val = e.target_unchecked_into::<web_sys::HtmlInputElement>().value();
@@ -671,14 +672,18 @@ pub fn home() -> Html {
             <div class="col-md-4">
                 <div class="card p-3 mb-3">
                     <h4>{if selected_task_id.is_some() { "Edit Operation" } else { "Add Operation" }}</h4>
-                    <input class="form-control mb-2" placeholder="User ID" 
+                    <input
+                        id="input-user-id"
+                        class="form-control mb-2" placeholder="User ID" 
                         value={(*form_user_id).clone()} 
                         oninput={
                             let form_user_id = form_user_id.clone();
                             Callback::from(move |e: InputEvent| form_user_id.set(e.target_unchecked_into::<web_sys::HtmlInputElement>().value()))
                         } />
                         
-                    <input class="form-control mb-2" placeholder="Operation ID" 
+                    <input
+                        id="input-op-id"
+                        class="form-control mb-2" placeholder="Operation ID" 
                         list="preset-list"
                         value={(*form_op_id).clone()} 
                         oninput={on_op_input} />
@@ -698,10 +703,14 @@ pub fn home() -> Html {
                         <div class="col">
                             <label class="form-label">{"Duration (HH:MM)"}</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" placeholder="HH" min="0"
+                                <input
+                                    id="input-dur-hour"
+                                    type="number" class="form-control" placeholder="HH" min="0"
                                     value={(*form_dur_hour).clone()}
                                     oninput={Callback::from(move |e: InputEvent| form_dur_hour.set(e.target_unchecked_into::<web_sys::HtmlInputElement>().value()))} />
-                                <input type="number" class="form-control" placeholder="MM" min="0" max="59"
+                                <input
+                                    id="input-dur-min"
+                                    type="number" class="form-control" placeholder="MM" min="0" max="59"
                                     value={(*form_dur_min).clone()}
                                     oninput={Callback::from(move |e: InputEvent| form_dur_min.set(e.target_unchecked_into::<web_sys::HtmlInputElement>().value()))} />
                             </div>
@@ -709,7 +718,7 @@ pub fn home() -> Html {
                     </div>
 
                     <div class="d-flex gap-2">
-                        <button onclick={on_add} class="btn btn-primary flex-grow-1" 
+                        <button id="btn-add-task" onclick={on_add} class="btn btn-primary flex-grow-1" 
                             disabled={
                                 form_user_id.trim().is_empty() || 
                                 form_op_id.trim().is_empty() ||
